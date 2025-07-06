@@ -1,0 +1,40 @@
+name: build-multiplatform
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        goos: [linux, windows, darwin]
+        goarch: [amd64, arm64]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: 1.24.1
+      - name: Build binary
+        run: |
+          EXT=""
+          if [ "${{ matrix.goos }}" = "windows" ]; then EXT=".exe"; fi
+          GO111MODULE=on GOOS=${{ matrix.goos }} GOARCH=${{ matrix.goarch }} go build -trimpath -o gatus-${{ matrix.goos }}-${{ matrix.goarch }}$EXT
+      - name: Compress binary
+        run: |
+          if [ "${{ matrix.goos }}" = "windows" ]; then
+            zip gatus-${{ matrix.goos }}-${{ matrix.goarch }}.zip gatus-${{ matrix.goos }}-${{ matrix.goarch }}.exe
+          else
+            tar -czvf gatus-${{ matrix.goos }}-${{ matrix.goarch }}.tar.gz gatus-${{ matrix.goos }}-${{ matrix.goarch }}
+          fi
+      - name: Upload binary
+        uses: actions/upload-artifact@v4
+        with:
+          name: gatus-${{ matrix.goos }}-${{ matrix.goarch }}
+          path: |
+            gatus-${{ matrix.goos }}-${{ matrix.goarch }}.zip
+            gatus-${{ matrix.goos }}-${{ matrix.goarch }}.tar.gz
