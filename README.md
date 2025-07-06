@@ -1,3 +1,19 @@
+# gatus-binary
+
+**gatus-binary** is a fork of [Gatus](https://github.com/TwiN/gatus) that provides automatic upstream sync and prebuilt multi-platform binaries on every commit.
+There are **no internal changes** to the original Gatus codebase-this fork exists solely to make downloading ready-to-use binaries easier for all platforms.
+
+## Downloading Binaries
+
+To download the latest binary for your operating system:
+1. Visit the [Actions page](https://github.com/MiguVT/gatus-binary/actions?query=workflow%3Abuild-multiplatform).
+2. Select the most recent workflow run for `build-multiplatform`.
+3. Scroll down to the "Artifacts" section.
+4. Download the binary archive that matches your OS and architecture (e.g., `gatus-linux-amd64.tar.gz`, `gatus-windows-amd64.zip`, etc.).
+5. Extract the archive and run the binary-no installation or Go environment required.
+
+---
+
 [![Gatus](.github/assets/logo-with-dark-text.png)](https://gatus.io)
 
 ![test](https://github.com/TwiN/gatus/actions/workflows/test.yml/badge.svg)
